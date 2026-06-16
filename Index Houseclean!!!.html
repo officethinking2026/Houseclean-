@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HouseClean!!!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <h1>🏡 HouseClean!!!</h1>
+    <p>Familia unida, hogar ordenado</p>
+  </div>
+  <div class="usuario" onclick="navegar('perfil')">
+    <div class="avatar" id="headerAvatar">😊</div>
+    <div>
+      <h3 id="headerNombre">Administrador</h3>
+      <p id="headerNivel">Control total</p>
+    </div>
+  </div>
+</header>
+
+<!-- ===================== INICIO ===================== -->
+<div class="pagina activa" id="pag-inicio">
+  <div class="bienvenida">
+    <h2>¡Hola, <span id="saludoNombre">familia</span>! 👋</h2>
+    <p>Organiza tareas, asigna recompensas y mantén a todos conectados.</p>
+  </div>
+  <section class="panel">
+    <div class="card">
+      <h2>📋 Tareas</h2>
+      <p>Administrar tareas del hogar y asignarlas a la familia.</p>
+      <button onclick="navegar('tareas')">Abrir Tareas</button>
+    </div>
+    <div class="card">
+      <h2>💬 Chat Familiar</h2>
+      <p>Conversación en tiempo real con todos los miembros.</p>
+      <button onclick="navegar('chat')">Entrar al Chat</button>
+    </div>
+    <div class="card">
+      <h2>🏆 Ranking</h2>
+      <p>Ver puntuaciones, niveles y medallas de la familia.</p>
+      <button onclick="navegar('ranking')">Ver Ranking</button>
+    </div>
+    <div class="card">
+      <h2>📅 Calendario</h2>
+      <p>Programar tareas y eventos familiares.</p>
+      <button onclick="navegar('calendario')">Abrir Calendario</button>
+    </div>
+    <div class="card">
+      <h2>💰 Recompensas</h2>
+      <p>Control de pagos, metas y recompensas.</p>
+      <button onclick="navegar('recompensas')">Abrir</button>
+    </div>
+    <div class="card">
+      <h2>👨‍👩‍👧‍👦 Familia</h2>
+      <p>Gestionar integrantes del hogar.</p>
+      <button onclick="navegar('familia')">Ver Miembros</button>
+    </div>
+  </section>
+  <section class="resumen">
+    <h2>Resumen General</h2>
+    <div class="estadisticas">
+      <div class="estadistica">
+        <h3>✔ Tareas completadas</h3>
+        <span id="statTareas">0</span>
+      </div>
+      <div class="estadistica">
+        <h3>🏆 Puntos Totales</h3>
+        <span id="statPuntos">0</span>
+      </div>
+      <div class="estadistica">
+        <h3>💵 Pagos Realizados</h3>
+        <span id="statPagos">$0</span>
+      </div>
+    </div>
+  </section>
+  <section class="actividad" style="margin-top:28px;">
+    <h2>Actividad reciente</h2>
+    <div id="feedActividad"></div>
+  </section>
+</div>
+
+<!-- ===================== TAREAS ===================== -->
+<div class="pagina" id="pag-tareas">
+  <div class="sec-header">
+    <h2>📋 Tareas del Hogar</h2>
+    <button class="btn" onclick="abrirModalTarea()">+ Nueva Tarea</button>
+  </div>
+  <div class="filtros">
+    <button class="filtro activo" onclick="filtrarTareas('todas',this)">Todas</button>
+    <button class="filtro" onclick="filtrarTareas('pendientes',this)">Pendientes</button>
+    <button class="filtro" onclick="filtrarTareas('completadas',this)">Completadas</button>
+  </div>
+  <div id="listaTareas"></div>
+</div>
+
+<!-- ===================== CHAT ===================== -->
+<div class="pagina" id="pag-chat">
+  <div class="sec-header">
+    <h2>💬 Chat Familiar</h2>
+  </div>
+  <div class="chat-container">
+    <div class="chat-quien">
+      <span>Escribir como:</span>
+      <div id="chatQuienBtns"></div>
+    </div>
+    <div class="chat-mensajes" id="chatMensajes"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Escribe un mensaje..." onkeydown="if(event.key==='Enter')enviarMensajeChat()">
+      <button class="btn" onclick="enviarMensajeChat()">➤</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RANKING ===================== -->
+<div class="pagina" id="pag-ranking">
+  <div class="sec-header">
+    <h2>🏆 Ranking Familiar</h2>
+  </div>
+  <div class="ranking-list" id="listaRanking"></div>
+</div>
+
+<!-- ===================== CALENDARIO ===================== -->
+<div class="pagina" id="pag-calendario">
+  <div class="sec-header">
+    <h2>📅 Calendario</h2>
+    <button class="btn" onclick="abrirModalEvento()">+ Nuevo Evento</button>
+  </div>
+  <div class="cal-header">
+    <button class="cal-nav" onclick="cambiarMes(-1)">‹</button>
+    <h3 id="calTitulo"></h3>
+    <button class="cal-nav" onclick="cambiarMes(1)">›</button>
+  </div>
+  <div class="cal-grid" id="calGrid"></div>
+  <div class="eventos-dia" id="eventosDia">
+    <h4>Selecciona un día para ver sus eventos</h4>
+  </div>
+</div>
+
+<!-- ===================== RECOMPENSAS ===================== -->
+<div class="pagina" id="pag-recompensas">
+  <div class="sec-header">
+    <h2>💰 Recompensas y Pagos</h2>
+    <button class="btn" onclick="abrirModalRecompensa()">+ Nueva Recompensa</button>
+  </div>
+  <div class="resumen-pagos" id="resumenPagos"></div>
+  <div id="listaRecompensas"></div>
+</div>
+
+<!-- ===================== FAMILIA ===================== -->
+<div class="pagina" id="pag-familia">
+  <div class="sec-header">
+    <h2>👨‍👩‍👧‍👦 Miembros</h2>
+    <button class="btn" onclick="abrirModalMiembro()">+ Agregar Miembro</button>
+  </div>
+  <div class="familia-grid" id="listaFamilia"></div>
+</div>
+
+<!-- ===================== PERFIL ===================== -->
+<div class="pagina" id="pag-perfil">
+  <div class="perfil-header">
+    <div class="perfil-avatar" id="perfilAvatar">😊</div>
+    <div class="perfil-nombre" id="perfilNombre">Administrador</div>
+    <div class="perfil-nivel" id="perfilNivel">🌱 Principiante</div>
+    <div class="perfil-stats">
+      <div class="perfil-stat"><strong id="perfilPuntos">0</strong><span>Puntos</span></div>
+      <div class="perfil-stat"><strong id="perfilTareas">0</strong><span>Tareas</span></div>
+      <div class="perfil-stat"><strong id="perfilDinero">$0</strong><span>Ganados</span></div>
+    </div>
+  </div>
+  <div class="perfil-tareas">
+    <h3 style="margin-bottom:14px;">Mis tareas completadas</h3>
+    <div id="perfilHistorial"></div>
+  </div>
+  <div style="margin-top:24px;background:var(--glass);border-radius:18px;padding:20px;border:1px solid var(--glass-border);">
+    <h3 style="margin-bottom:16px;">Seleccionar perfil activo</h3>
+    <div id="perfilSelector"></div>
+  </div>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<nav>
+  <button onclick="navegar('inicio')" id="nav-inicio" class="nav-activo">🏠<span>Inicio</span></button>
+  <button onclick="navegar('chat')" id="nav-chat">💬<span>Chat</span></button>
+  <button onclick="navegar('tareas')" id="nav-tareas">📋<span>Tareas</span></button>
+  <button onclick="navegar('ranking')" id="nav-ranking">🏆<span>Ranking</span></button>
+  <button onclick="navegar('perfil')" id="nav-perfil">👤<span>Perfil</span></button>
+</nav>
+
+<!-- ===================== MODAL TAREA ===================== -->
+<div class="modal-overlay oculto" id="modalTarea">
+  <div class="modal">
+    <h3 id="modalTareaTitulo">Nueva Tarea</h3>
+    <div class="form-group"><label>Nombre de la tarea</label><input type="text" id="tareaNombre" placeholder="Ej: Lavar los platos"></div>
+    <div class="form-group"><label>Puntos</label><input type="number" id="tareaPuntos" placeholder="Ej: 10" min="1" value="10"></div>
+    <div class="form-group"><label>Dinero ($)</label><input type="number" id="tareaDinero" placeholder="Ej: 500" min="0" value="0"></div>
+    <div class="form-group"><label>Asignar a</label><select id="tareaAsignado"></select></div>
+    <div class="form-group"><label>Fecha límite</label><input type="date" id="tareaFecha"></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalTarea')">Cancelar</button>
+      <button class="btn" onclick="guardarTarea()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL EVENTO ===================== -->
+<div class="modal-overlay oculto" id="modalEvento">
+  <div class="modal">
+    <h3>Nuevo Evento</h3>
+    <div class="form-group"><label>Título</label><input type="text" id="eventoTitulo" placeholder="Ej: Limpieza general"></div>
+    <div class="form-group"><label>Fecha</label><input type="date" id="eventoFecha"></div>
+    <div class="form-group"><label>Descripción</label><textarea id="eventoDesc" placeholder="Detalles del evento..."></textarea></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalEvento')">Cancelar</button>
+      <button class="btn" onclick="guardarEvento()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL RECOMPENSA ===================== -->
+<div class="modal-overlay oculto" id="modalRecompensa">
+  <div class="modal">
+    <h3>Nueva Recompensa</h3>
+    <div class="form-group"><label>Descripción</label><input type="text" id="recompNombre" placeholder="Ej: Pago semanal de Ana"></div>
+    <div class="form-group"><label>Monto ($)</label><input type="number" id="recompMonto" placeholder="Ej: 2000" min="1"></div>
+    <div class="form-group"><label>Para</label><select id="recompMiembro"></select></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalRecompensa')">Cancelar</button>
+      <button class="btn" onclick="guardarRecompensa()">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL MIEMBRO ===================== -->
+<div class="modal-overlay oculto" id="modalMiembro">
+  <div class="modal">
+    <h3>Agregar Miembro</h3>
+    <div class="form-group"><label>Nombre</label><input type="text" id="miembroNombre" placeholder="Ej: María"></div>
+    <div class="form-group"><label>Emoji (avatar)</label><input type="text" id="miembroAvatar" placeholder="Ej: 👩" maxlength="2" value="😊"></div>
+    <div class="form-group"><label>Rol</label><input type="text" id="miembroRol" placeholder="Ej: Mamá, Papá, Hijo..."></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalMiembro')">Cancelar</button>
+      <button class="btn" onclick="guardarMiembro()">Agregar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== MODAL DETALLE MIEMBRO ===================== -->
+<div class="modal-overlay oculto" id="modalDetalleMiembro">
+  <div class="modal">
+    <h3 id="detalleMiembroTitulo"></h3>
+    <div id="detalleMiembroContenido"></div>
+    <div class="modal-btns">
+      <button class="btn btn-gris" onclick="cerrarModal('modalDetalleMiembro')">Cerrar</button>
+      <button class="btn btn-rojo btn-sm" onclick="eliminarMiembroActual()">Eliminar Miembro</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
